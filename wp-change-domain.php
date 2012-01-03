@@ -382,6 +382,14 @@ if($is_authenticated) {
                 $DDWPDC->actions[] = 'Old domain ('.$data['old_domain'].') replaced with new domain ('.$data['new_domain'].') in '.$data['prefix'].'posts.post_content';
             }
 
+            // Update Post Excerpt
+            $result = $mysqli->query('UPDATE '.$data['prefix'].'posts SET post_excerpt = REPLACE(post_excerpt,"'.$data['old_domain'].'","'.$data['new_domain'].'");');
+            if(!$result) {
+                throw new Exception($mysqli->error);
+            } else {
+                $DDWPDC->actions[] = 'Old domain ('.$data['old_domain'].') replaced with new domain ('.$data['new_domain'].') in '.$data['prefix'].'posts.post_excerpt';
+            }
+
             // Update Post GUID
             $result = $mysqli->query('UPDATE '.$data['prefix'].'posts SET guid = REPLACE(guid,"'.$data['old_domain'].'","'.$data['new_domain'].'");');
             if(!$result) {
