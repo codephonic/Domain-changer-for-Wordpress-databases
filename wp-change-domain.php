@@ -398,7 +398,27 @@ if($is_authenticated) {
                 $DDWPDC->actions[] = 'Old domain ('.$data['old_domain'].') replaced with new domain ('.$data['new_domain'].') in '.$data['prefix'].'posts.guid';
             }
 
-            // Update "upload_path"
+            // ================================ PLUGINS
+            // ----- Download Monitor --------
+            $result = $mysqli->query('SELECT count(*) FROM '.$data['prefix'].'download_monitor_files;');
+            if($result) {
+                   $result = $mysqli->query('UPDATE '.$data['prefix'].'download_monitor_files SET filename = REPLACE(filename,"'.$data['old_domain'].'","'.$data['new_domain'].'");');
+                   if(!$result) {
+                        throw new Exception($mysqli->error);
+                   } else {
+                        $DDWPDC->actions[] = 'Old domain ('.$data['old_domain'].') replaced with new domain ('.$data['new_domain'].') in '.$data['prefix'].'download_monitor_files.filename';
+                   }
+                   
+                   $result = $mysqli->query('UPDATE '.$data['prefix'].'download_monitor_file_meta SET meta_value = REPLACE(meta_value,"'.$data['old_domain'].'","'.$data['new_domain'].'");');
+                   if(!$result) {
+                        throw new Exception($mysqli->error);
+                   } else {
+                        $DDWPDC->actions[] = 'Old domain ('.$data['old_domain'].') replaced with new domain ('.$data['new_domain'].') in '.$data['prefix'].'download_monitor_file_meta.meta_value';
+                   }
+            }
+
+
+// Update "upload_path"
 //            $upload_dir = dirname(__FILE__).'/wp-content/uploads';
 //            $result = $mysqli->query('UPDATE '.$data['prefix'].'options SET option_value = "'.$upload_dir.'" WHERE option_name="upload_path";');
 //            if(!$result) {
