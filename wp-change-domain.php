@@ -314,7 +314,7 @@ if($is_authenticated) {
 
 
             // Update wp_blogs table
-            $result = $mysqli->query('UPDATE '.$data['prefix'].'blogs SET domain = REPLACE(option_value,"'.$data['old_domain'].'","'.$data['new_domain'].'");');
+            $result = $mysqli->query('UPDATE '.$data['prefix'].'blogs SET domain = REPLACE(domain,"'.$data['old_domain'].'","'.$data['new_domain'].'");');
             if(!$result) {
                 throw new Exception($mysqli->error);
             } else {
