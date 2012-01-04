@@ -314,7 +314,7 @@ if($is_authenticated) {
 
 
             // Update wp_blogs table
-            $result = $mysqli->query('UPDATE '.$data['prefix'].'blogs SET domain ="' .$data['new_domain']. '";');
+            $result = $mysqli->query('UPDATE '.$data['prefix'].'blogs SET domain = REPLACE(option_value,"'.$data['old_domain'].'","'.$data['new_domain'].'");');
             if(!$result) {
                 throw new Exception($mysqli->error);
             } else {
@@ -416,7 +416,8 @@ if($is_authenticated) {
                         $DDWPDC->actions[] = 'Old domain ('.$data['old_domain'].') replaced with new domain ('.$data['new_domain'].') in '.$data['prefix'].'download_monitor_file_meta.meta_value';
                    }
             }
-
+            
+            $DDWPDC->actions[] = 'Old domain ('.$data['old_domain'].') replaced with new domain ('.$data['new_domain'].') in '.$data['prefix'].'posts.post_excerpt';
 
 // Update "upload_path"
 //            $upload_dir = dirname(__FILE__).'/wp-content/uploads';
